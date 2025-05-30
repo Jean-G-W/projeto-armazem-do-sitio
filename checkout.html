@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra | Armazém do Sítio</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <style>
+ 
+        .checkout-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 30px auto;
+        }
+        
+        .pix-payment {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .pix-qrcode {
+            margin: 20px auto;
+            padding: 15px;
+            background: white;
+            border-radius: 4px;
+            max-width: 300px;
+        }
+        
+        .pix-qrcode img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .pix-instructions {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 4px;
+        }
+        
+        .pix-copy-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .pix-copy-btn:hover {
+            background: #1b5e20;
+        }
+        
+        .success-message {
+            color: #2e7d32;
+            margin-top: 10px;
+            display: none;
+            font-weight: bold;
+        }
+        
+        .order-summary {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .order-summary h3 {
+            margin-top: 0;
+            color: #4a2c0d;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        
+        .order-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #e91e63;
+            margin-top: 15px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="imagens/logotipo.png" alt="Armazém do Sítio" class="logo-img">
+    </header>
+    
+    <nav>
+        <a href="index.html">Início</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="checkout.html">Carrinho</a>
+        <a href="contato.html">Contato</a>
+    </nav>
+
+    <main class="checkout-container">
+        <h1 style="text-align: center; margin: 20px 0; color: #4a2c0d;">Finalizar Compra</h1>
+        
+        <div class="order-summary">
+            <h3>Resumo do Pedido</h3>
+            <div id="order-items">
+                
+            </div>
+            <div class="order-total" id="order-total">Total: R$ 0,00</div>
+        </div>
+        
+        <div class="pix-payment">
+            <h2>Pagamento via PIX</h2>
+            <p>Valor total: <strong id="pix-amount">R$ 0,00</strong></p>
+            
+            <div class="pix-qrcode">
+                
+                <img src="imagens/qrcode-pix.png" alt="QR Code PIX - Armazém do Sitio" id="pix-qr-image">
+                <p>Escaneie o QR Code com seu aplicativo de banco</p>
+            </div>
+            
+            <div class="pix-instructions">
+                <h3>Instruções para pagamento:</h3>
+                <ol>
+                    <li>Abra o aplicativo do seu banco</li>
+                    <li>Selecione a opção PIX</li>
+                    <li>Escaneie o QR Code ou copie o código abaixo</li>
+                    <li>Confirme o pagamento</li>
+                </ol>
+                
+                <p>Chave PIX (copiar e colar):</p>
+                <div style="background: #eee; padding: 10px; border-radius: 4px; word-break: break-all;">
+                    <span id="pix-key">lourdesarmazemdositio@gmail.com</span>
+                </div>
+                <button class="pix-copy-btn" onclick="copyPixKey()">
+                    <img src="imagens/copy-icon.png" alt="Copiar" width="16"> Copiar Chave PIX
+                </button>
+                <a href="https://wa.me/5541998092591" class="whatsapp-btn">
+                <img src="imagens/whatsapp.png" alt="WhatsApp" width="20"> Enviar mensagem
+            </a>
+                <div id="copy-success" class="success-message">Chave copiada com sucesso!</div>
+            </div>
+            
+            <p style="font-size: 0.9rem; color: #666;">
+                Após o pagamento, envie o comprovante para (41) 99809-2591 no WhatsApp ou lourdesarmazemdositio@gmail.com
+            </p>
+        </div>
+    </main>
+
+    <script>
+
+    function updateCartDisplay() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const orderItemsContainer = document.getElementById('order-items');
+        let total = 0;
+
+        orderItemsContainer.innerHTML = '';
+        
+        cart.forEach((item, index) => {
+            const itemElement = document.createElement('div');
+            itemElement.className = 'order-item';
+            itemElement.innerHTML = `
+                <div class="item-info">
+                    <span>${item.name}</span>
+                    <span class="item-price">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</span>
+                </div>
+                <div class="item-actions">
+                    <button class="quantity-btn minus" data-index="${index}">−</button>
+                    <span class="item-quantity">${item.quantity}x</span>
+                    <button class="quantity-btn plus" data-index="${index}">+</button>
+                    <button class="remove-btn" data-index="${index}">×</button>
+                </div>
+            `;
+            orderItemsContainer.appendChild(itemElement);
+            total += item.price * item.quantity;
+        });
+
+   
+        document.getElementById('order-total').textContent = `Total: R$ ${total.toFixed(2).replace('.',',')}`;
+        document.getElementById('pix-amount').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+
+
+        document.querySelectorAll('.quantity-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                const cart = JSON.parse(localStorage.getItem('cart'));
+                
+                if (this.classList.contains('plus')) {
+                    cart[index].quantity += 1;
+                } else if (this.classList.contains('minus')) {
+                    if (cart[index].quantity > 1) {
+                        cart[index].quantity -= 1;
+                    } else {
+                        cart.splice(index, 1);
+                    }
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+            });
+        });
+
+
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                const cart = JSON.parse(localStorage.getItem('cart'));
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+            });
+        });
+    }
+
+
+    window.onload = updateCartDisplay;
+</script>
+</body>
+</html>

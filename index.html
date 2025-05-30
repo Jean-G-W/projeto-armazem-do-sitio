@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armazém do Sítio</title>
+    <style>
+        /* ESTILOS GERAIS */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* MENU SUPERIOR */
+        .menu-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .menu-navegacao {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-navegacao a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 10px 25px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .menu-navegacao a:hover {
+            background: #e8f5e9;
+            transform: translateY(-2px);
+        }
+
+
+        .menu-navegacao a.ativo:hover {
+            transform: none;
+        }
+
+        .menu-navegacao :hover::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 25px;
+            right: 25px;
+            height: 2px;
+            background: #25D366;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 20px 0 10px;
+            line-height: 1.1;
+        }
+
+        .sublogo {
+            font-size: 1.5rem;
+            color: #388e3c;
+            margin-bottom: 40px;
+        }
+
+        /* SEÇÃO DE CONTATO */
+        .contato-section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contato-section h1 {
+            color: #25D366;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .whatsapp-numero {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        .endereco {
+            margin-top: 25px;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 600px) {
+            .menu-navegacao {
+                flex-direction: column;
+                border-radius: 15px;
+                gap: 5px;
+            }
+
+            .menu-navegacao a {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img src="imagens/logotipo.png" alt="Armazém do Sítio" style="max-width: 500px; width: 100%; margin: 20px 0;">
+
+
+        <div class="menu-container">
+            <nav class="menu-navegacao">
+                <a href="index.html">Início</a>
+                <a href="produtos.html">Produtos</a>
+                <a href="checkout.html">Carrinho</a>
+                <a href="contato.html" class="ativo">Contato</a>
+            </nav>
+
+
+
+            <div class="contato-section">
+                <h1>Nos encontre no WhatsApp</h1>
+                <p>Tire suas dúvidas ou faça pedidos diretamente:</p>
+
+                <div class="whatsapp-numero">(41) 99809-2591</div>
+
+                <div class="endereco">
+                    <p><strong>Endereço físico:</strong></p>
+                    <p>Rua Principal, 123 - Centro</p>
+                    <p>Loanda - Paraná</p>
+                    <p><strong>Horário:</strong> Seg-Sáb, 8h às 18h</p>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
